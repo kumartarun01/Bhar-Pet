@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct YourOrderView: View {
+struct YourOrderView2: View {
     var body: some View {
         VStack {
             Text("Your Orders")
@@ -15,6 +15,6 @@ struct YourOrderView: View {
 
 #Preview {
     NavigationStack {
-        YourOrderView()
+        YourOrderView2()
     }
 }
