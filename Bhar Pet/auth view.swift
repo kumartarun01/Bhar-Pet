@@ -65,7 +65,11 @@ final class AuthViewModel: ObservableObject {
         var body: some View {
        NavigationStack{
            ZStack{
-               LinearGradient(gradient: Gradient(colors: [.blue.opacity(0.3),  .blue.opacity(0.6)]), startPoint: .top, endPoint: .bottom)
+               LinearGradient(gradient: Gradient(colors: [
+                Color(red: 0.95, green: 0.90, blue: 0.92),
+                Color(red: 0.98, green: 0.93, blue: 0.88),
+                Color(red: 0.96, green: 0.88, blue: 0.90)
+            ]), startPoint: .top, endPoint: .bottom)
                    .edgesIgnoringSafeArea(.all)
                VStack(spacing: -50){
                    Image("Findurantlogo")
@@ -126,9 +130,13 @@ struct LoginView2: View {
                      
                        Spacer()
                         
-                        Text("Forgot password?")
-                            .font(.footnote)
-                            .bold()
+                        NavigationLink {
+                            ForgotPassword()
+                        }label: {
+                            Text("Forgot password?")
+                                .font(.footnote)
+                                .bold()
+                        }
                     }.padding(EdgeInsets(top: 0, leading: -60, bottom: 0, trailing: -40))
                 
                     Text("Log In")
@@ -252,6 +260,49 @@ struct Signup2View: View {
         .padding(.horizontal)
     }
 }
+
+struct ForgotPassword: View {
+    @State private var email: String = ""
+    var body: some View {
+        NavigationStack{
+            ZStack {
+                Color(.systemGray6)
+                Rectangle()
+                    .frame(height: 430)
+                    .foregroundStyle(Color.gray.opacity(0.1))
+                    .cornerRadius(20)
+                
+                VStack(spacing: 30){
+                    Text("Forgot Your Password")
+                        .font(.largeTitle)
+                    VStack(alignment: .leading, spacing: 50) {
+                        Text("Please enter the email address you'd like your password reset information sent to ")
+                            .font(Font.system(size: 20, weight: .regular))
+                        Text("Enter email address")
+                            .font(Font.system(size: 16, weight: .semibold))
+                    }
+                    TextField("Email", text: $email)
+                        .textInputAutocapitalization(.never)
+                        .keyboardType(.emailAddress)
+                        .textFieldStyle(.roundedBorder)
+                    Text("Request reset link")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.black)
+                        .foregroundStyle(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                    NavigationLink {
+                        MainTabView()
+                    }label: {
+                        Text("Back to login")
+                    }
+                }.padding()
+
+            }.ignoresSafeArea()
+        }.toolbar(.hidden)
+    }
+}
+
 #Preview {
     AuthView(auth: AuthViewModel())
 }

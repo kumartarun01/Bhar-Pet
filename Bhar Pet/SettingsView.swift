@@ -14,7 +14,7 @@ struct SettingsView: View {
             List {
                 Section("Account") {
                     NavigationLink("Profile", destination: ProfileView())
-                    NavigationLink("Your Orders", destination: YourOrderView())
+                    NavigationLink("Your Orders", destination: YourOrderView2())
                     NavigationLink("History", destination: HistoryView())
                 }
                 
@@ -24,11 +24,11 @@ struct SettingsView: View {
                     NavigationLink("Help & Support", destination: HelpView())
                     NavigationLink("About Us", destination: AboutView())
                     NavigationLink("Follow Us", destination: FollowUsView())
-                    NavigationLink("Write a Review", destination: AboutView())
+                    NavigationLink("Write a Review", destination: reviewpage())
                 }
             }
             .navigationTitle("Setting")
-        }
+        }.toolbar(.hidden)
     }
 }
 

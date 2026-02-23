@@ -10,56 +10,60 @@ import SwiftUI
 struct ProfileView: View {
     
     var body: some View {
-        VStack(spacing: 20) {
-            
-            Spacer()
-            
-            Text("FINDURANT")
-                .font(.system(size: 35, weight: .light, design: .serif))
-                .italic()
-            
-            Image(systemName: "person.fill") // Add in Assets
-                .resizable()
-                .scaledToFit()
-                .frame(width: 100)
-            
-            Text("Restaurant which you know well!!!")
-                .foregroundColor(.gray)
-            
-            Text("John")
-                .font(.title2)
-            
-            Spacer()
-            
-            NavigationLink(destination: HistoryView()) {
-                Text("History")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue.opacity(0.2))
-                    .cornerRadius(20)
-            }
-            
-            NavigationLink(destination: YourOrderView()) {
-                Text("orders")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue.opacity(0.2))
-                    .cornerRadius(20)
-            }
-            
-            Spacer()
-            
-            Button("Log out") {
-                print("Logout tapped")
-            }
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color.red.opacity(0.3))
-            .cornerRadius(20)
-            
-            Spacer()
+        @StateObject  var auth = AuthViewModel()
+        NavigationStack {
+            VStack(spacing: 20) {
+                
+                Spacer()
+                
+                Text("FINDURANT")
+                    .font(.system(size: 35, weight: .light, design: .serif))
+                    .italic()
+                
+                Image(systemName: "person.fill") // Add in Assets
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100)
+                
+                Text("Restaurant which you know well!!!")
+                    .foregroundColor(.gray)
+                
+                Text("John")
+                    .font(.title2)
+                
+                Spacer()
+                
+                NavigationLink(destination: HistoryView()) {
+                    Text("History")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue.opacity(0.2))
+                        .cornerRadius(20)
+                }
+                
+                NavigationLink(destination: YourOrderView()) {
+                    Text("orders")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue.opacity(0.2))
+                        .cornerRadius(20)
+                }
+                
+                Spacer()
+                
+                NavigationLink{
+                    MainTabView()
+                }label: {
+                    Text("Logout")
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.red.opacity(0.3))
+                .cornerRadius(20)
+                
+                Spacer()
+            }.padding()
         }
-        .padding()
         .navigationTitle("Profile")
         .navigationBarTitleDisplayMode(.inline)
     }

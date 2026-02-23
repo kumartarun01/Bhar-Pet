@@ -25,6 +25,7 @@ struct reviewpage: View {
                        SettingsView()
                     }label: {
                        Image(systemName: "chevron.left")
+                            .bold()
                     }.foregroundStyle(.primary)
                   
                     Text("Reviews")
@@ -32,10 +33,10 @@ struct reviewpage: View {
                         .bold()
                     
                 }
-                Text("write a review")
+                Text("Write a Review")
                     .font(.title2)
                     .bold()
-                TextField("NAME", text: $name)
+                TextField("Name", text: $name)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 HStack{
                     ForEach(1...5, id: \.self) { star in
@@ -47,7 +48,7 @@ struct reviewpage: View {
                         
                     }
                 }
-               TextField("WRITE YOUR REVIEW HERE", text: $comment)
+               TextField("Write Your Review Here", text: $comment)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 Button("submit"){
                     let newReview = review(name: name, rating: rating, comment: comment)
@@ -82,9 +83,9 @@ struct reviewpage: View {
                 .padding(.vertical, 5)
             }
         }
-        }
-        }
+    }.toolbar(.hidden)
     }
+}
 
 #Preview {
     reviewpage()

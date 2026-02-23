@@ -37,19 +37,19 @@ struct VegView: View {
                         Button(action: {
                             // Back action
                         }) {
-                            HStack {
-                                Image(systemName: "chevron.left")
-                                Text("Back")
-                            }
-                            .foregroundColor(.blue)
+//                            HStack {
+//                                Image(systemName: "chevron.left")
+//                                Text("Back")
+//                            }
+//                            .foregroundColor(.blue)
                         }
                         .padding(.leading)
                         
                         // Heading
-                        Text("Vegetarian")
-                            .font(.custom("Snell Roundhand", size: 32))
-                            .padding(.leading, 120)
-                            .padding(.bottom, 10)
+//                        Text("Vegetarian")
+//                            .font(.custom("Snell Roundhand", size: 32))
+//                            .padding(.leading, 120)
+//                            .padding(.bottom, 10)
                         
                         // Grid
                         LazyVGrid(columns: columns, spacing: 20) {

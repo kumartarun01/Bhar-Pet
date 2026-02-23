@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @State private var selection: Int = 0
+    
     let items = [
         ("Cake", "cake"),
         ("Burger", "Burger"),
@@ -41,24 +43,20 @@ struct HomeView: View {
                 .cornerRadius(20)
                 .padding(10)
                 
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(items, id: \.0) { item in
-                            VStack(spacing: 10) {
-                                Image(item.1) // Add images in Assets
-                                    .resizable()
-                                    .frame(height: 100)
-                                    .clipped()
-                                    .cornerRadius(5)
-                                
-                                Text(item.0)
-                                    .font(.headline)
+                Picker("Auth", selection: $selection) {
+                                Text("Veg").tag(0)
+                                Text("Non Veg").tag(1)
                             }
-                        }
-                    }
-                    .padding()
-                }
-            }
+                            .pickerStyle(.segmented)
+                            .padding(.horizontal)
+                if selection == 0 {
+                                VegView()
+                                
+                            }
+                            else{
+                                NonVegView()
+                            }
+            }.background(Color(.systemGray6))
         }.toolbar(.hidden)
     }
 }

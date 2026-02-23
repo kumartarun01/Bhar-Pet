@@ -33,22 +33,22 @@ struct NonVegView: View {
                     VStack(alignment: .leading) {
                         
                         // Back Button
-                        Button(action: {
-                            // Back action
-                        }) {
-                            HStack {
-                                Image(systemName: "chevron.left")
-                                Text("Back")
-                            }
-                            .foregroundColor(.blue)
-                        }
-                        .padding(.leading)
+//                        Button(action: {
+//                            // Back action
+//                        }) {
+//                            HStack {
+//                                Image(systemName: "chevron.left")
+//                                Text("Back")
+//                            }
+//                            .foregroundColor(.blue)
+//                        }
+//                        .padding(.leading)
                         
                         // Heading
-                        Text("Non Vegetarian")
-                            .font(.custom("Snell Roundhand", size: 32))
-                            .padding(.leading, 100)
-                            .padding(.bottom, 10)
+//                        Text("Non Vegetarian")
+//                            .font(.custom("Snell Roundhand", size: 32))
+//                            .padding(.leading, 100)
+//                            .padding(.bottom, 10)
                         
                         // Grid
                         LazyVGrid(columns: columns, spacing: 20) {
