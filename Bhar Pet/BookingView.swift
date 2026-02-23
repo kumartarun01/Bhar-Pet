@@ -9,37 +9,51 @@ import SwiftUI
 struct ReservationView: View {
     
     var body: some View {
-        VStack {
-            Text("Reservation")
-                .font(.custom("Snell Roundhand", size: 40))
-                .padding(EdgeInsets(top: 50, leading: 0, bottom: -1, trailing: 0))
-            ScrollView {
-                VStack(alignment: .center, spacing: 5) {
+        NavigationStack {
+            VStack {
+                Text("Reservation")
+                    .font(.custom("Snell Roundhand", size: 40))
+                    .padding(EdgeInsets(top: 50, leading: 0, bottom: -1, trailing: 0))
+                ScrollView {
+                    VStack(alignment: .center, spacing: 5) {
+                        
+                        NavigationLink {
+                            ForagedFareView()
+                        }label: {
+                            RestaurantCard(
+                                image: "restaurant1",
+                                title: "Foraged Fare",
+                                description: "Peaceful Environment, Fresh Food, Indian, Spanish, Italian food available..."
+                            )
+                        }.foregroundStyle(.primary)
+                        
+                        NavigationLink {
+                            RoseCafeView()
+                        }label: {
+                            RestaurantCard(
+                                image: "restaurant2",
+                                title: "Rose Cafe",
+                                description: "Greenery environment with romantic vibes. Pre-booking available..."
+                            )
+                        }.foregroundStyle(.primary)
+                        
+                        NavigationLink {
+                            OliveBarView()
+                        }label: {
+                            RestaurantCard(
+                                image: "restaurant3",
+                                title: "Olive Bar & Kitchen",
+                                description: "Perfect place for candle light dinner and family gatherings..."
+                            )
+                        }.foregroundStyle(.primary)
+                    }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                     
-                    RestaurantCard(
-                        image: "restaurant1",
-                        title: "Foraged Fare",
-                        description: "Peaceful Environment, Fresh Food, Indian, Spanish, Italian food available..."
-                    )
-                    
-                    RestaurantCard(
-                        image: "restaurant2",
-                        title: "Rose Cafe",
-                        description: "Greenery environment with romantic vibes. Pre-booking available..."
-                    )
-                    
-                    RestaurantCard(
-                        image: "restaurant3",
-                        title: "Royal Dine",
-                        description: "Perfect place for candle light dinner and family gatherings..."
-                    )
-                }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
-                
-            }
-            .navigationTitle("")
-            .navigationBarTitleDisplayMode(.inline)
+                }
+                .navigationTitle("")
+                .navigationBarTitleDisplayMode(.inline)
 
-        }.ignoresSafeArea()
+            }.ignoresSafeArea()
+        }
             }
 }
 
@@ -64,7 +78,7 @@ struct RestaurantCard: View {
 //                .padding(.leading, 10)
             
             Text(description)
-                .font(.subheadline)
+                .font(.footnote)
                 .foregroundColor(.gray)
 //               .padding(.leading, 10)
         }

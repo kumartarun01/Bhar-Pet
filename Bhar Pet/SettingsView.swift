@@ -19,9 +19,12 @@ struct SettingsView: View {
                 }
                 
                 Section("Other") {
-                    Text("Notifications")
-                    Text("Privacy Policy")
-                    Text("Help & Support")
+                    NavigationLink("Notifications", destination: NotificationView())
+                    NavigationLink("Privacy Policy", destination: PrivacyView())
+                    NavigationLink("Help & Support", destination: HelpView())
+                    NavigationLink("About Us", destination: AboutView())
+                    NavigationLink("Follow Us", destination: FollowUsView())
+                    NavigationLink("Write a Review", destination: AboutView())
                 }
             }
             .navigationTitle("Setting")

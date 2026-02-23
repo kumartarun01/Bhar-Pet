@@ -11,7 +11,7 @@ struct OmeletteView: View {
     
     let categories = [
         "Bread Omelette",
-        "Half Fry Omelette",
+        "Half Frie Omelette",
         "Cheese Omelette"
     ]
     

@@ -59,7 +59,7 @@ struct HomeView: View {
                     .padding()
                 }
             }
-        }
+        }.toolbar(.hidden)
     }
 }
 #Preview {
