@@ -15,6 +15,8 @@ struct OmeletteView: View {
         "Cheese Omelette"
     ]
     
+    @State private var selectedItems: Set<String> = []
+    
     var body: some View {
         ZStack {
             Color(.systemGray6)
@@ -22,7 +24,6 @@ struct OmeletteView: View {
             
             VStack {
                 
-                // iPhone Style Container
                 ZStack(alignment: .top) {
                     
                     VStack(alignment: .leading) {
@@ -47,10 +48,10 @@ struct OmeletteView: View {
                             .padding(.vertical, 5)
                         
                         // Omelette Image
-                        Image("omelette") // Add image in Assets
+                        Image("omelette")
                             .resizable()
                             .scaledToFill()
-                            .frame(height: 300)
+                            .frame(height: 250)
                             .clipped()
                             .padding(.horizontal, 30)
                         
@@ -60,25 +61,54 @@ struct OmeletteView: View {
                             .padding(.leading, 30)
                             .padding(.top, 10)
                         
-                        // Category Buttons
+                        // Checkbox List
                         VStack(spacing: 12) {
                             ForEach(categories, id: \.self) { item in
-                                Text(item)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 10)
+                                
+                                Button(action: {
+                                    if selectedItems.contains(item) {
+                                        selectedItems.remove(item)
+                                    } else {
+                                        selectedItems.insert(item)
+                                    }
+                                }) {
+                                    HStack {
+                                        Image(systemName: selectedItems.contains(item) ? "checkmark.square.fill" : "square")
+                                            .foregroundColor(.green)
+                                        
+                                        Text(item)
+                                            .foregroundColor(.black.opacity(0.8))
+                                            .font(.system(size: 18, weight: .semibold))
+                                        
+                                        Spacer()
+                                    }
+                                    .padding()
                                     .background(Color(red: 0.68, green: 0.78, blue: 0.77))
-                                    .cornerRadius(20)
+                                    .cornerRadius(15)
                                     .padding(.horizontal, 30)
-                                    .foregroundColor(.black.opacity(0.8))
-                                    .font(.system(size: 18, weight: .semibold))
+                                }
                             }
                         }
                         
                         Spacer()
+                        
+                        // Add To Cart Button
+                        Button(action: {
+                            print("Selected Items:", selectedItems)
+                        }) {
+                            Text("Add To Cart")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(selectedItems.isEmpty ? Color.gray : Color.green)
+                                .foregroundColor(.white)
+                                .cornerRadius(20)
+                                .padding(.horizontal, 30)
+                                .padding(.bottom, 20)
+                        }
+                        .disabled(selectedItems.isEmpty)
                     }
                 }
                 .padding()
-                .frame(height: 820)
                 
                 Spacer()
             }

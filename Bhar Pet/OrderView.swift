@@ -33,9 +33,9 @@ struct OrderView: View {
                     VStack(alignment: .leading, spacing: 20) {
                         
                         // Back Button
-                        Button(action: {
-                            // Back action
-                        }) {
+                       NavigationLink {
+                            CartView()
+                        }label: {
                             HStack {
                                 Image(systemName: "chevron.left")
                                 Text("Back")
@@ -127,7 +127,7 @@ struct OrderView: View {
                     .padding()
                 }
             }
-        }
+        }.toolbar(.hidden)
     }
 }
 

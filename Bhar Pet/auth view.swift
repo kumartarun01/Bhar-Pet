@@ -6,59 +6,130 @@
 //
 import SwiftUI
 import Combine
+import Firebase
+import FirebaseAuth
+import FirebaseFirestore
+
 final class AuthViewModel: ObservableObject {
     @Published var isAuthenticated: Bool = false
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
    
-    private var users: [String: String] = [:]
+    private let db = Firestore.firestore()
+//    private var users: [String: String] = [:]
 //    email -> password
-    func login(email: String, password: String) {
-        errorMessage = nil
-        isLoading = true
-        // Simulate async auth; replace with real backend later
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
-            guard let self else { return }
-            self.isLoading = false
-            if email.isEmpty || password.isEmpty {
-                self.errorMessage = "Please enter email and password."
-                return
-            }
-            guard let savedPassword = self.users[email] else {
-                self.errorMessage = "No account found for this email. Please sign up."
-                return
-            }
-            guard password == savedPassword else {
-                self.errorMessage = "Password is incorrect."
-                return
-            }
-         
-            self.errorMessage = nil
-            self.isAuthenticated = true
-        }
-    }
-    func signup(email: String, password: String, username: String) {
-        errorMessage = nil
-        isLoading = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
-            guard let self else { return }
-            self.isLoading = false
-            if email.isEmpty || password.isEmpty || username.isEmpty {
-                self.errorMessage = "Please fill all fields."
-                return
-            }
     
-
-                self.users[email] = password
-                self.errorMessage = nil
-                self.isAuthenticated = true
-
+    func login(email: String, password: String) {
+            errorMessage = nil
+            isLoading = true
+            
+            Auth.auth().signIn(withEmail: email, password: password) { result, error in
+                
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    
+                    if let error = error {
+                        self.errorMessage = error.localizedDescription
+                        return
+                    }
+                    
+                    self.isAuthenticated = true
+                }
+            }
+        }
+        
+        // MARK: SIGNUP
+        func signup(email: String, password: String, username: String) {
+            
+            errorMessage = nil
+            isLoading = true
+            
+            Auth.auth().createUser(withEmail: email, password: password) { result, error in
+                
+                if let error = error {
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        self.errorMessage = error.localizedDescription
+                    }
+                    return
+                }
+                
+                guard let uid = result?.user.uid else { return }
+                
+                // Save extra data to Firestore
+                self.db.collection("users").document(uid).setData([
+                    "uid": uid,
+                    "username": username,
+                    "email": email,
+                    "createdAt": Timestamp()
+                ]) { error in
+                    
+                    DispatchQueue.main.async {
+                        self.isLoading = false
+                        
+                        if let error = error {
+                            self.errorMessage = error.localizedDescription
+                        } else {
+                            self.isAuthenticated = true
+                        }
+                    }
+                }
+            }
+        }
+        
+        // MARK: LOGOUT
+        func logout() {
+            try? Auth.auth().signOut()
+            isAuthenticated = false
         }
     }
-    func logout() {
-        isAuthenticated = false
-    }
-}
+
+//    func login(email: String, password: String) {
+//        errorMessage = nil
+//        isLoading = true
+//        // Simulate async auth; replace with real backend later
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
+//            guard let self else { return }
+//            self.isLoading = false
+//            if email.isEmpty || password.isEmpty {
+//                self.errorMessage = "Please enter email and password."
+//                return
+//            }
+//            guard let savedPassword = self.users[email] else {
+//                self.errorMessage = "No account found for this email. Please sign up."
+//                return
+//            }
+//            guard password == savedPassword else {
+//                self.errorMessage = "Password is incorrect."
+//                return
+//            }
+//         
+//            self.errorMessage = nil
+//            self.isAuthenticated = true
+//        }
+//    }
+//    func signup(email: String, password: String, username: String) {
+//        errorMessage = nil
+//        isLoading = true
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
+//            guard let self else { return }
+//            self.isLoading = false
+//            if email.isEmpty || password.isEmpty || username.isEmpty {
+//                self.errorMessage = "Please fill all fields."
+//                return
+//            }
+//    
+//
+//                self.users[email] = password
+//                self.errorMessage = nil
+//                self.isAuthenticated = true
+//
+//        }
+//    }
+//    func logout() {
+//        isAuthenticated = false
+//    }
+//}
      struct AuthView: View {
         @ObservedObject var auth: AuthViewModel
         @State private var selection: Int = 0

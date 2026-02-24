@@ -14,8 +14,8 @@ struct SettingsView: View {
             List {
                 Section("Account") {
                     NavigationLink("Profile", destination: ProfileView())
-                    NavigationLink("Your Orders", destination: YourOrderView2())
-                    NavigationLink("History", destination: HistoryView())
+//                    NavigationLink("Your Orders", destination: YourOrderView2())
+//                    NavigationLink("History", destination: HistoryView())
                 }
                 
                 Section("Other") {
