@@ -70,7 +70,7 @@ final class AuthViewModel: ObservableObject {
                         if let error = error {
                             self.errorMessage = error.localizedDescription
                         } else {
-                            self.isAuthenticated = true
+                            self.isAuthenticated = false
                         }
                     }
                 }

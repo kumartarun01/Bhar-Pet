@@ -37,7 +37,9 @@ import FirebaseCore
 
 @main
 struct Bhar_PetApp: App {
+    
     @StateObject var cartManager = CartManager()
+    @StateObject var auth = AuthViewModel()   // 👈 ADD THIS
     
     init() {
         FirebaseApp.configure()
@@ -45,10 +47,9 @@ struct Bhar_PetApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                ContentView()
-            }
-            .environmentObject(cartManager)
+            MainTabView()
+                .environmentObject(cartManager)
+                .environmentObject(auth)   // 👈 PASS SAME INSTANCE
         }
     }
 }
