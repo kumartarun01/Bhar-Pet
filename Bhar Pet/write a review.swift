@@ -12,6 +12,7 @@ struct review: Identifiable{
     let comment: String
 }
 struct reviewpage: View {
+    @Environment(\.dismiss) var dismiss
     @State private var name: String = ""
     @State private var rating: Int = 0
     @State private var comment: String = ""
@@ -21,11 +22,8 @@ struct reviewpage: View {
         VStack{
             VStack(alignment: .leading,spacing: 12){
                 HStack(spacing: 130){
-                    NavigationLink{
-                       SettingsView()
-                    }label: {
-                       Image(systemName: "chevron.left")
-                            .bold()
+                    Button(action: {dismiss()}) {
+                        Image(systemName: "chevron.left")
                     }.foregroundStyle(.primary)
                   
                     Text("Reviews")

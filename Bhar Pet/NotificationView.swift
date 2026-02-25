@@ -19,17 +19,17 @@ struct NotificationView: View {
                 // Main iPhone Style Container
                 VStack(alignment: .leading) {
                     
-                    // Back Button
-                    Button(action: {
-                        // Back action
-                    }) {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                            Text("Back")
-                        }
-                        .foregroundColor(.blue)
-                    }
-                    .padding(.top, 20)
+//                    // Back Button
+//                    Button(action: {
+//                        // Back action
+//                    }) {
+//                        HStack {
+//                            Image(systemName: "chevron.left")
+//                            Text("Back")
+//                        }
+//                        .foregroundColor(.blue)
+//                    }
+//                    .padding(.top, 20)
                     
                     // Heading
                     Text("Notifications")

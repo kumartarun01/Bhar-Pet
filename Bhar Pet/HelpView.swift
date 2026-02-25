@@ -40,18 +40,18 @@ struct HelpView: View {
 //                            .padding(.top, 15)
 //                            .frame(maxWidth: .infinity)
                         
-                        // Back Button
-                        Button(action: {
-                            // Back Action
-                        }) {
-                            HStack {
-                                Image(systemName: "chevron.left")
-                                Text("Back")
-                            }
-                            .foregroundColor(.blue)
-                        }
-                        .padding(.leading)
-                        .padding(.top, 10)
+//                        // Back Button
+//                        Button(action: {
+//                            // Back Action
+//                        }) {
+//                            HStack {
+//                                Image(systemName: "chevron.left")
+//                                Text("Back")
+//                            }
+//                            .foregroundColor(.blue)
+//                        }
+//                        .padding(.leading)
+//                        .padding(.top, 10)
                         
                         // Heading
                         Text("Help & Support")
