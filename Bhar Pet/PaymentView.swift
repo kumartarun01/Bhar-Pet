@@ -18,13 +18,13 @@ struct PaymentView: View {
             // MARK: Payment Methods Row
             HStack(spacing: 15) {
                 
-                PaymentOptionView(
-                    title: "Credit/Debit Card",
-                    imageName: "creditcard.fill",
-                    isSelected: selectedMethod == "Card"
-                ) {
-                    selectedMethod = "Card"
-                }
+                    PaymentOptionView(
+                        title: "Credit/Debit Card",
+                        imageName: "creditcard.fill",
+                        isSelected: selectedMethod == "Card"
+                    ) {
+                        selectedMethod = "Card"
+                    }
                 
                 PaymentOptionView(
                     title: "Netbanking",
@@ -52,6 +52,12 @@ struct PaymentView: View {
             }
             .padding(.top, 20)
             
+            if selectedMethod == "Card" {
+                CardDetailsView()
+            }else if selectedMethod == "Netbanking" {
+                NetBankingPaymentView()
+            }
+            
             // MARK: UPI TextField
             if selectedMethod == "UPI" {
                 TextField("Enter UPI ID", text: $upiID)
@@ -67,18 +73,26 @@ struct PaymentView: View {
             }
             
             // MARK: Proceed Button
-            Button(action: {
-                print("Proceed tapped")
-            }) {
-                Text("Proceed to payment")
-                    .font(.headline)
-                    .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 55)
-                    .background(Color.yellow.opacity(0.6))
-                    .cornerRadius(8)
-                    .padding(.horizontal)
-            }
+//            Button(action: {
+//                print("Proceed tapped")
+//            }) {
+                NavigationLink {
+                    PaymentSuccessView(
+                        amount: 2163.42,
+                        transactionID: "TXN123456"
+                    )
+                }label: {
+                    Text("Proceed to payment")
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 55)
+                        .background(Color.yellow.opacity(0.6))
+                        .cornerRadius(8)
+                        .padding(.horizontal)
+                }
+                
+//            }
             .padding(.top, 10)
             
             Spacer()
@@ -118,6 +132,8 @@ struct PaymentOptionView: View {
 }
 
 #Preview {
-    PaymentView()
+    NavigationStack {
+        PaymentView()
+    }
 }
 

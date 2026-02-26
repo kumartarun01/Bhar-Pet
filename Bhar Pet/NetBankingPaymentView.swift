@@ -23,20 +23,20 @@ struct NetBankingPaymentView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             
-            // MARK: Header
-            Text("Payment Information")
-                .font(.headline)
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-                .background(Color.black)
+//            // MARK: Header
+//            Text("Payment Information")
+//                .font(.headline)
+//                .foregroundColor(.white)
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//                .padding()
+//                .background(Color.black)
             
             // MARK: Net Banking Title
             HStack {
                 Text("Net Banking")
                     .font(.title3)
                 Spacer()
-                Image(systemName: "chevron.right")
+//                Image(systemName: "chevron.right")
             }
             .padding(.horizontal)
             
@@ -86,42 +86,42 @@ struct NetBankingPaymentView: View {
                 .foregroundColor(.gray)
                 .padding(.horizontal)
             
-            // MARK: Amount
-            HStack {
-                Text("INR 2163.42")
-                    .font(.title2)
-                    .foregroundColor(.orange)
-                    .bold()
-                
-                Text("(Total Amount Payable)")
-                    .foregroundColor(.gray)
-            }
-            .padding(.horizontal)
-            
-            // MARK: Buttons
-            HStack(spacing: 20) {
-                
-                Button(action: {
-                    print("Make Payment tapped")
-                }) {
-                    Text("Make Payment")
-                        .foregroundColor(.white)
-                        .frame(width: 150, height: 45)
-                        .background(Color.black)
-                        .cornerRadius(6)
-                }
-                
-                Button(action: {
-                    print("Cancel tapped")
-                }) {
-                    Text("Cancel")
-                        .foregroundColor(.white)
-                        .frame(width: 100, height: 45)
-                        .background(Color.black)
-                        .cornerRadius(6)
-                }
-            }
-            .padding(.horizontal)
+//            // MARK: Amount
+//            HStack {
+//                Text("INR 2163.42")
+//                    .font(.title2)
+//                    .foregroundColor(.orange)
+//                    .bold()
+//                
+//                Text("(Total Amount Payable)")
+//                    .foregroundColor(.gray)
+//            }
+//            .padding(.horizontal)
+//            
+//            // MARK: Buttons
+//            HStack(spacing: 20) {
+//                
+//                Button(action: {
+//                    print("Make Payment tapped")
+//                }) {
+//                    Text("Make Payment")
+//                        .foregroundColor(.white)
+//                        .frame(width: 150, height: 45)
+//                        .background(Color.black)
+//                        .cornerRadius(6)
+//                }
+//                
+//                Button(action: {
+//                    print("Cancel tapped")
+//                }) {
+//                    Text("Cancel")
+//                        .foregroundColor(.white)
+//                        .frame(width: 100, height: 45)
+//                        .background(Color.black)
+//                        .cornerRadius(6)
+//                }
+//            }
+//            .padding(.horizontal)
             
             Spacer()
         }
