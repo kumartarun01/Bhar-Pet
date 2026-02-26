@@ -58,9 +58,9 @@ struct PaymentSuccessView: View {
                 Spacer()
                 
                 // MARK: Button
-                Button(action: {
-                    print("Back to Home tapped")
-                }) {
+                NavigationLink {
+                    HomeView()
+                }label: {
                     Text("Back to Home")
                         .foregroundColor(.white)
                         .frame(height: 50)
