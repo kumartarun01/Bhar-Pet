@@ -18,40 +18,10 @@ struct HelpView: View {
             
             VStack {
                 
-                // Top VC Label
-//                Text("HelpVC")
-//                    .font(.headline)
-//                    .padding(.top, 10)
-                
                 Spacer()
-                
-                // iPhone Style Container
                 ZStack(alignment: .top) {
                     
-//                    RoundedRectangle(cornerRadius: 45)
-//                        .fill(Color(.systemGray5))
-                    
                     VStack(alignment: .leading) {
-                        
-                        // Dynamic Island
-//                        Capsule()
-//                            .fill(Color.black)
-//                            .frame(width: 140, height: 35)
-//                            .padding(.top, 15)
-//                            .frame(maxWidth: .infinity)
-                        
-//                        // Back Button
-//                        Button(action: {
-//                            // Back Action
-//                        }) {
-//                            HStack {
-//                                Image(systemName: "chevron.left")
-//                                Text("Back")
-//                            }
-//                            .foregroundColor(.blue)
-//                        }
-//                        .padding(.leading)
-//                        .padding(.top, 10)
                         
                         // Heading
                         Text("Help & Support")
@@ -93,13 +63,6 @@ struct HelpView: View {
                         .frame(maxWidth: .infinity)
                         
                         Spacer()
-                        
-                        // Bottom Home Indicator
-//                        Capsule()
-//                            .fill(Color.black)
-//                            .frame(width: 140, height: 5)
-//                            .padding(.bottom, 15)
-//                            .frame(maxWidth: .infinity)
                     }
                 }
                 .padding()
