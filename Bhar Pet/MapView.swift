@@ -1,239 +1,194 @@
-//
-//  MapView.swift
-//  Bhar Pet
-//
-//  Created by iMac1 on 12/02/26.
-//
 import SwiftUI
 import MapKit
+import CoreLocation
+import Combine
 
-
-struct MapView: View {
+// MARK: - Location Manager
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
-    @State private var cameraPosition: MapCameraPosition = .region(
-        MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 28.6139, longitude: 77.2090),
-            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-        )
-    )
+    private let manager = CLLocationManager()
     
-    var body: some View {
-        NavigationStack {
-            ZStack(alignment: .top) {
-                
-                Map(position: $cameraPosition) {
-                    // No MapContent for now; plain map view
-                }
-                .ignoresSafeArea()
-                
-                // Search Bar
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                    TextField("Search", text: .constant(""))
-                    Spacer()
-                    Image(systemName: "paperplane.fill")
-                }
-                .padding()
-                .background(Color.white)
-                .cornerRadius(15)
-                .padding()
-            }
-        }
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
+    @Published var userLocation: CLLocation?
+    
+    override init() {
+        super.init()
+        manager.delegate = self
+        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        userLocation = locations.last
     }
 }
-#Preview {
-    MapView()
+
+// MARK: - Model
+struct PlaceItem: Identifiable {
+    let id = UUID()
+    let mapItem: MKMapItem
 }
 
+// MARK: - Main View
+struct MapView: View {
+    
+    @StateObject private var locationManager = LocationManager()
+    
+    @State private var region = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 28.6139, longitude: 77.2090),
+        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    )
+    
+    @State private var cameraPosition: MapCameraPosition = .region(MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 28.6139, longitude: 77.2090),
+        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+    ))
+    
+    @State private var searchText = ""
+    @State private var places: [PlaceItem] = []
+    @State private var selectedPlace: MKMapItem?
+    
+    @State private var route: MKRoute?
+    
+    var body: some View {
+        ZStack {
+            
+            Map(position: $cameraPosition) {
+                ForEach(places) { item in
+                    let coord = item.mapItem.placemark.coordinate
+                    Annotation(item.mapItem.name ?? "Place", coordinate: coord) {
+                        Button {
+                            selectedPlace = item.mapItem
+                            getDirections(to: item.mapItem)
+                        } label: {
+                            Image(systemName: "mappin.circle.fill")
+                                .font(.title)
+                                .foregroundColor(.red)
+                        }
+                    }
+                }
+                if let route = route {
+                    MapPolyline(route.polyline)
+                        .stroke(.blue, lineWidth: 5)
+                }
+            }
+            .ignoresSafeArea()
+            
+            VStack {
+                
+                HStack {
+                    TextField("Search nearby places...", text: $searchText)
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(10)
+                    
+                    Button("Search") {
+                        searchPlaces()
+                    }
+                }
+                .padding()
+                
+                Spacer()
+                
+                if let place = selectedPlace {
+                    VStack(alignment: .leading, spacing: 10) {
+                        
+                        Text(place.name ?? "Place")
+                            .font(.headline)
+                        
+                        if let route = route {
+                            Text("ETA: \(Int(route.expectedTravelTime / 60)) min")
+                            Text("Distance: \(String(format: "%.2f", route.distance / 1000)) km")
+                        } else if let distance = calculateDistance(to: place) {
+                            Text("Distance: \(distance) km")
+                        }
+                        
+                        Button("Navigate in Maps") {
+                            openInMaps(place)
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                    }
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(15)
+                    .padding()
+                }
+            }
+        }
+        
+        .onChange(of: locationManager.userLocation) { _, newLocation in
+            if let loc = newLocation {
+                region.center = loc.coordinate
+                cameraPosition = .region(MKCoordinateRegion(center: loc.coordinate, span: region.span))
+            }
+        }
+    }
+    
+    // MARK: - Search
+    func searchPlaces() {
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = searchText
+        request.region = region
+        
+        let search = MKLocalSearch(request: request)
+        
+        search.start { response, error in
+            if let items = response?.mapItems {
+                places = items.map { PlaceItem(mapItem: $0) }
+            }
+        }
+    }
+    
+    // MARK: - Distance
+    func calculateDistance(to place: MKMapItem) -> String? {
+        guard let userLoc = locationManager.userLocation else { return nil }
+        
+        let placeLoc = CLLocation(
+            latitude: place.placemark.coordinate.latitude,
+            longitude: place.placemark.coordinate.longitude
+        )
+        
+        let distance = userLoc.distance(from: placeLoc) / 1000
+        return String(format: "%.2f", distance)
+    }
+    
+    // MARK: - Directions
+    func getDirections(to place: MKMapItem) {
+        guard let userLoc = locationManager.userLocation else { return }
+        
+        let request = MKDirections.Request()
+        request.source = MKMapItem(
+            placemark: MKPlacemark(coordinate: userLoc.coordinate)
+        )
+        request.destination = place
+        request.transportType = .automobile
+        
+        let directions = MKDirections(request: request)
+        
+        directions.calculate { response, error in
+            if let route = response?.routes.first {
+                self.route = route
+                let newRegion = MKCoordinateRegion(route.polyline.boundingMapRect)
+                region = newRegion
+                cameraPosition = .region(newRegion)
+            }
+        }
+    }
+    
+    // MARK: - Open Maps
+    func openInMaps(_ place: MKMapItem) {
+        place.openInMaps(launchOptions: [
+            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving
+        ])
+    }
+}
 
-//import SwiftUI
-//import MapKit
-//import CoreLocation
-//import Combine   // ✅ FIX ADDED
-//
-//// 📍 LOCATION MANAGER
-//class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
-//    
-//    private let manager = CLLocationManager()
-//    @Published var location: CLLocation?
-//    
-//    override init() {
-//        super.init()
-//        manager.delegate = self
-//        manager.requestWhenInUseAuthorization()
-//        manager.startUpdatingLocation()
-//    }
-//    
-//    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        location = locations.first
-//    }
-//}
-//
-//struct MapKitGoogleStyleView: View {
-//    
-//    @StateObject private var locationManager = LocationManager()
-//    
-//    @State private var cameraPosition: MapCameraPosition = .automatic
-//    @State private var searchText = ""
-//    @State private var results: [MKMapItem] = []
-//    @State private var selectedPlace: MKMapItem?
-//    @State private var route: MKRoute?
-//    
-//    var body: some View {
-//        NavigationStack {
-//            ZStack(alignment: .top) {
-//                
-//                Map(position: $cameraPosition, selection: $selectedPlace) {
-//                    
-//                    UserAnnotation()
-//                    
-//                    ForEach(results, id: \.self) { item in
-//                        Marker(item.name ?? "Place", coordinate: item.placemark.coordinate)
-//                    }
-//                    
-//                    if let route {
-//                        MapPolyline(route.polyline)
-//                            .stroke(.blue, lineWidth: 6)
-//                    }
-//                }
-//                .ignoresSafeArea()
-//                .onChange(of: selectedPlace) {
-//                    if let place = selectedPlace {
-//                        fetchRoute(to: place)
-//                    }
-//                }
-//                
-//                // 🔍 SEARCH BAR
-//                HStack {
-//                    Image(systemName: "magnifyingglass")
-//                    
-//                    TextField("Search restaurants...", text: $searchText)
-//                        .onSubmit { searchPlaces() }
-//                    
-//                    Spacer()
-//                    
-//                    Button {
-//                        searchPlaces()
-//                    } label: {
-//                        Image(systemName: "paperplane.fill")
-//                    }
-//                }
-//                .padding()
-//                .background(.white)
-//                .cornerRadius(15)
-//                .padding()
-//                
-//                // 📦 BOTTOM PANEL
-//                VStack {
-//                    Spacer()
-//                    
-//                    if let selectedPlace {
-//                        VStack(spacing: 10) {
-//                            
-//                            Text(selectedPlace.name ?? "")
-//                                .font(.headline)
-//                            
-//                            if let distance = calculateDistance(to: selectedPlace) {
-//                                Text("Distance: \(distance)")
-//                            }
-//                            
-//                            if let route {
-//                                Text("ETA: \(formatTime(route.expectedTravelTime))")
-//                            }
-//                            
-//                            HStack {
-//                                Button("Route") {
-//                                    fetchRoute(to: selectedPlace)
-//                                }
-//                                .padding()
-//                                .background(.blue)
-//                                .foregroundColor(.white)
-//                                .cornerRadius(10)
-//                                
-//                                Button("Navigate") {
-//                                    openInMaps(selectedPlace)
-//                                }
-//                                .padding()
-//                                .background(.green)
-//                                .foregroundColor(.white)
-//                                .cornerRadius(10)
-//                            }
-//                        }
-//                        .padding()
-//                        .background(.white)
-//                        .cornerRadius(15)
-//                        .shadow(radius: 5)
-//                        .padding()
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-//    // 🔍 SEARCH
-//    func searchPlaces() {
-//        let request = MKLocalSearch.Request()
-//        request.naturalLanguageQuery = searchText.isEmpty ? "Restaurants" : searchText
-//        
-//        if let location = locationManager.location {
-//            request.region = MKCoordinateRegion(
-//                center: location.coordinate,
-//                span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
-//            )
-//        }
-//        
-//        MKLocalSearch(request: request).start { response, _ in
-//            results = response?.mapItems ?? []
-//        }
-//    }
-//    
-//    // 🚗 ROUTE
-//    func fetchRoute(to destination: MKMapItem) {
-//        guard let userLocation = locationManager.location else { return }
-//        
-//        let request = MKDirections.Request()
-//        request.source = MKMapItem(
-//            placemark: MKPlacemark(coordinate: userLocation.coordinate)
-//        )
-//        request.destination = destination
-//        request.transportType = .automobile
-//        
-//        MKDirections(request: request).calculate { response, _ in
-//            if let route = response?.routes.first {
-//                self.route = route
-//                cameraPosition = .rect(route.polyline.boundingMapRect)
-//            }
-//        }
-//    }
-//    
-//    // 📏 DISTANCE
-//    func calculateDistance(to item: MKMapItem) -> String? {
-//        guard let userLocation = locationManager.location else { return nil }
-//        
-//        let place = CLLocation(
-//            latitude: item.placemark.coordinate.latitude,
-//            longitude: item.placemark.coordinate.longitude
-//        )
-//        
-//        let km = userLocation.distance(from: place) / 1000
-//        return String(format: "%.2f km", km)
-//    }
-//    
-//    // ⏱ TIME
-//    func formatTime(_ seconds: TimeInterval) -> String {
-//        "\(Int(seconds / 60)) mins"
-//    }
-//    
-//    // 🧭 NAVIGATION
-//    func openInMaps(_ place: MKMapItem) {
-//        place.openInMaps(launchOptions: [
-//            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving
-//        ])
-//    }
-//}
-//
-//#Preview {
-//    MapKitGoogleStyleView()
-//}
+// MARK: - Preview
+struct MapView_Previews: PreviewProvider {
+    static var previews: some View {
+        MapView()
+    }
+}

@@ -15,6 +15,7 @@
 		395BB47A2F4D621400749DCC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 395BB4792F4D621400749DCC /* FirebaseFirestore */; };
 		395BB47C2F4D621400749DCC /* FirebaseInAppMessaging-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 395BB47B2F4D621400749DCC /* FirebaseInAppMessaging-Beta */; };
 		395BB47E2F4D621400749DCC /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 395BB47D2F4D621400749DCC /* FirebaseStorage */; };
+		39EE954D2F7BA2090000262D /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 39EE954C2F7BA2090000262D /* GoogleMaps */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 				395BB4702F4D621400749DCC /* FirebaseAI in Frameworks */,
 				395BB4742F4D621400749DCC /* FirebaseAuthCombine-Community in Frameworks */,
 				395BB4762F4D621400749DCC /* FirebaseCore in Frameworks */,
+				39EE954D2F7BA2090000262D /* GoogleMaps in Frameworks */,
 				395BB47E2F4D621400749DCC /* FirebaseStorage in Frameworks */,
 				395BB4722F4D621400749DCC /* FirebaseAuth in Frameworks */,
 				395BB47A2F4D621400749DCC /* FirebaseFirestore in Frameworks */,
@@ -92,6 +94,7 @@
 				395BB4792F4D621400749DCC /* FirebaseFirestore */,
 				395BB47B2F4D621400749DCC /* FirebaseInAppMessaging-Beta */,
 				395BB47D2F4D621400749DCC /* FirebaseStorage */,
+				39EE954C2F7BA2090000262D /* GoogleMaps */,
 			);
 			productName = "Bhar Pet";
 			productReference = 3969EC1A2F3DAFEB00CD14CE /* Bhar Pet.app */;
@@ -123,6 +126,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				395BB46E2F4D621400749DCC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				39EE954B2F7BA2090000262D /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3969EC1B2F3DAFEB00CD14CE /* Products */;
@@ -283,6 +287,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need location for navigation";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -314,6 +319,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "We need location for navigation";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -368,6 +374,14 @@
 				minimumVersion = 12.9.0;
 			};
 		};
+		39EE954B2F7BA2090000262D /* XCRemoteSwiftPackageReference "ios-maps-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-maps-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.10.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -410,6 +424,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 395BB46E2F4D621400749DCC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		39EE954C2F7BA2090000262D /* GoogleMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39EE954B2F7BA2090000262D /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;
+			productName = GoogleMaps;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
