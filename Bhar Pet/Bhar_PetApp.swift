@@ -47,9 +47,10 @@ struct Bhar_PetApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainTabView()
-                .environmentObject(cartManager)
-                .environmentObject(auth)   // 👈 PASS SAME INSTANCE
+            AdminUserView()
+//            MainTabView()
+//                .environmentObject(cartManager)
+//                .environmentObject(auth)   // 👈 PASS SAME INSTANCE
         }
     }
 }

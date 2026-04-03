@@ -11,44 +11,46 @@ struct MainTabView: View {
     @EnvironmentObject var auth: AuthViewModel
     
     var body: some View {
-        Group {
-            if auth.isAuthenticated {
-                NavigationStack {
-                    TabView {
-                        HomeView()
-                            .tabItem {
-                                Image(systemName: "house")
-                                Text("Home")
-                            }
-                        
-                        BookingView()
-                            .tabItem {
-                                Image(systemName: "calendar")
-                                Text("Booking")
-                            }
-                        
-                        MapView()
-                            .tabItem {
-                                Image(systemName: "map")
-                                Text("Map")
-                            }
-                        
-                        ReservationView()
-                            .tabItem {
-                                Image(systemName: "fork.knife.circle.fill")
-                                Text("Reservation")
-                            }
-                        
-                        SettingsView()
-                            .tabItem {
-                                Image(systemName: "gear")
-                                Text("Settings")
-                            }
-                    }
-                }.toolbar(.hidden)
-            } else {
-                AuthView(auth: auth)
-            }
+NavigationStack {
+    Group {
+        if auth.isAuthenticated {
+            NavigationStack {
+                TabView {
+                    HomeView()
+                        .tabItem {
+                            Image(systemName: "house")
+                            Text("Home")
+                        }
+                    
+                    BookingView()
+                        .tabItem {
+                            Image(systemName: "calendar")
+                            Text("Booking")
+                        }
+                    
+                    MapView()
+                        .tabItem {
+                            Image(systemName: "map")
+                            Text("Map")
+                        }
+                    
+                    ReservationView()
+                        .tabItem {
+                            Image(systemName: "fork.knife.circle.fill")
+                            Text("Reservation")
+                        }
+                    
+                    SettingsView()
+                        .tabItem {
+                            Image(systemName: "gear")
+                            Text("Settings")
+                        }
+                }
+            }.toolbar(.hidden)
+        } else {
+            AuthView(auth: auth)
+        }
+    }
         }
     }
 }
