@@ -1,5 +1,3 @@
-
-
 //
 //  ProfileView.swift
 //  Bhar Pet
@@ -138,4 +136,5 @@ extension ProfileView {
 
 #Preview {
     ProfileView()
+        .environmentObject(AuthViewModel())   
 }

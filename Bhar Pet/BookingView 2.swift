@@ -1,13 +1,25 @@
 import SwiftUI
 
-struct BookingView: View {
+struct OrderHistoryView2: View {
+    
+    @ObservedObject var manager = CartManager2.shared
+    
     var body: some View {
-        Text("Booking View Placeholder")
-            .font(.largeTitle)
-            .padding()
+        List {
+            ForEach(manager.orders) { order in
+                VStack(alignment: .leading) {
+                    Text("Order Total: ₹\(order.total)")
+                        .bold()
+                    
+                    ForEach(order.items) { item in
+                        Text("\(item.food.name) x \(item.quantity)")
+                    }
+                }
+            }
+        }
     }
 }
 
 #Preview {
-    BookingView()
+    OrderHistoryView2()
 }

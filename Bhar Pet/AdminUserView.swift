@@ -114,6 +114,20 @@ struct AdminUserView: View {
     }
 }
 
+//struct RootView: View {
+//
+// @StateObject var auth = AuthViewModel()
+//
+// var body: some View {
+// if auth.isAuthenticated {
+// MainTabView() // ya ProfileView
+// .environmentObject(auth)
+// } else {
+// AuthView(auth: auth)
+// }
+// }
+//}
+
 #Preview {
     AdminUserView()
 }

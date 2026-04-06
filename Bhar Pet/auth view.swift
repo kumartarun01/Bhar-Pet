@@ -76,8 +76,10 @@ final class AuthViewModel: ObservableObject {
                 }
             }
         }
-        
-        // MARK: LOGOUT
+//        func logout() {
+//            isAuthenticated = false
+//        }
+//        // MARK: LOGOUT
         func logout() {
             try? Auth.auth().signOut()
             isAuthenticated = false
@@ -129,7 +131,7 @@ final class AuthViewModel: ObservableObject {
 //    func logout() {
 //        isAuthenticated = false
 //    }
-//}
+//        }
      struct AuthView: View {
         @ObservedObject var auth: AuthViewModel
         @State private var selection: Int = 0
@@ -356,12 +358,14 @@ struct ForgotPassword: View {
                         .textInputAutocapitalization(.never)
                         .keyboardType(.emailAddress)
                         .textFieldStyle(.roundedBorder)
-                    Text("Request reset link")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.black)
-                        .foregroundStyle(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                    Button(action:  { }){
+                        Text("Request reset link")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.black)
+                            .foregroundStyle(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
                     NavigationLink {
                         MainTabView()
                     }label: {
@@ -373,6 +377,7 @@ struct ForgotPassword: View {
         }.toolbar(.hidden)
     }
 }
+
 
 #Preview {
     AuthView(auth: AuthViewModel())

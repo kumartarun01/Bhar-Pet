@@ -22,7 +22,7 @@ NavigationStack {
                             Text("Home")
                         }
                     
-                    BookingView()
+                    OrderHistoryView2()
                         .tabItem {
                             Image(systemName: "calendar")
                             Text("Booking")
