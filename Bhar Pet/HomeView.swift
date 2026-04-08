@@ -73,12 +73,12 @@ struct HomeView: View {
         NavigationStack {
             VStack {
                 
-                HStack {
-                    Text("Home").font(.largeTitle.bold())
-                   
-                   
-                }
-                .padding(.horizontal)
+//                HStack {
+//                    Text("Home").font(.largeTitle.bold())
+//                   
+//                   
+//                }
+//                .padding(.horizontal)
                 
                 // SEARCH
                 HStack {
@@ -239,7 +239,7 @@ struct OrderSuccessView: View {
                 .font(.largeTitle)
             
             NavigationLink("📦 View Orders") {
-                OrderHistoryView2()
+                YourOrderView()
             }
         }
     }

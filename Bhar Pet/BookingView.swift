@@ -107,10 +107,7 @@ struct ReservationView: View {
                         .font(.largeTitle)
                         .bold()
                     
-                    Spacer()
-                    NavigationLink("My Bookings") {
-                        MyBookingsView()
-                    }
+                   
                 }
                 ScrollView {
                     ForEach(restaurants, id: \.1) { item in
@@ -216,42 +213,14 @@ struct SuccessView: View {
                 .font(.largeTitle)
             
             NavigationLink("View Bookings") {
-                MyBookingsView()
+              OrderHistoryView2()
             }
         }
     }
 }
 
 // MARK: - BOOKINGS
-struct MyBookingsView: View {
-    
-    @ObservedObject var manager = ReservationManager.shared
-    
-    var body: some View {
-        List {
-            ForEach(manager.reservations) { r in
-                
-                VStack(alignment: .leading) {
-                    
-                    Text(r.restaurantName).bold()
-                    Text("👤 \(r.customerName)")
-                    Text("📞 \(r.phoneNumber)")
-                    Text("🪑 Table: \(r.tableNumber)")
-                    Text("👥 Members: \(r.members)")
-                    
-                    Text("From: \(r.startDate.formatted())")
-                    Text("To: \(r.endDate.formatted())")
-                    
-                    Text("💳 \(r.paymentMethod)")
-                        .foregroundColor(.green)
-                }
-            }
-        }
-        .onAppear {
-            manager.removeExpiredReservations()
-        }
-    }
-}
+
 
 // MARK: - CARD
 struct RestaurantCard: View {
