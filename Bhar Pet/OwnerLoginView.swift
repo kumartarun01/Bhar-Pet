@@ -152,7 +152,7 @@ struct OwnerLoginView: View {
     var body: some View {
         
         if isLoggedIn {
-            OwnerDashboardView()
+            RootTabView()
         } else {
             
             NavigationView {
