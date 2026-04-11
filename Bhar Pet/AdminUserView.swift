@@ -63,7 +63,6 @@ struct AdminUserView: View {
                     .environmentObject(userAuth)
                     .environmentObject(userCart)
                     .onChange(of: userAuth.isAuthenticated) { isAuth in
-                        // Jab logout hoga (isAuthenticated false hoga), role reset karo
                         if !isAuth {
                             selectedRole = .none
                         }
@@ -71,18 +70,17 @@ struct AdminUserView: View {
             }
             
             // MARK: - ADMIN VIEW
-//            else if selectedRole == .admin {
-//                
-//                OwnerLoginView()
-//            }
             else if selectedRole == .admin {
                 
-                OwnerLoginView()
-                    .onChange(of: Auth.auth().currentUser) { _ in
-                        if Auth.auth().currentUser == nil {
-                            selectedRole = .none
-                        }
+                OwnerLoginView(onLogout: {
+                    // Owner logout: go back to role selection
+                    selectedRole = .none
+                })
+                .onChange(of: Auth.auth().currentUser) { _ in
+                    if Auth.auth().currentUser == nil {
+                        selectedRole = .none
                     }
+                }
             }
         }
         .animation(.easeInOut, value: selectedRole)

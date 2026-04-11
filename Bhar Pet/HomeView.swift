@@ -1,5 +1,8 @@
+
+
 import SwiftUI
 import Combine
+import FirebaseAuth
 
 // MARK: - MODEL
 struct FoodItem2: Identifiable, Hashable {
@@ -44,6 +47,22 @@ class CartManager2: ObservableObject {
     func placeOrder() {
         let order = Order2(items: cart, total: totalPrice())
         orders.append(order)
+        
+        // Send to OrderManager so Owner dashboard can see it
+        let customerName = Auth.auth().currentUser?.email ?? "Customer"
+        let orderItems = cart.map {
+            OrderItem(name: $0.food.name, qty: $0.quantity, price: Double($0.food.price))
+        }
+        let reservation = OrderReservation(
+            restaurantName: "Bhar Pet",
+            customerName: customerName,
+            phone: "",
+            items: orderItems,
+            total: Double(totalPrice()),
+            status: .preparing
+        )
+        OrderManager.shared.addOrder(reservation)
+        
         cart.removeAll()
     }
 }
@@ -72,14 +91,6 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                
-//                HStack {
-//                    Text("Home").font(.largeTitle.bold())
-//                   
-//                   
-//                }
-//                .padding(.horizontal)
-                
                 // SEARCH
                 HStack {
                     Image(systemName: "magnifyingglass")
@@ -245,9 +256,6 @@ struct OrderSuccessView: View {
     }
 }
 
-// MARK: - ORDER HISTORY
-
-// MARK: - PREVIEW
 #Preview {
     HomeView()
 }

@@ -1,9 +1,4 @@
-//
-//  SettingsView.swift
-//  Bhar Pet
-//
-//  Created by iMac1 on 12/02/26.
-//
+
 
 import SwiftUI
 
@@ -13,22 +8,39 @@ struct SettingsView: View {
         NavigationStack {
             List {
                 Section("Account") {
-                    NavigationLink("Profile", destination: ProfileView())
-//                    NavigationLink("Your Orders", destination: YourOrderView2())
-//                    NavigationLink("History", destination: HistoryView())
+                    NavigationLink(destination: ProfileView()) {
+                        Label("Profile", systemImage: "person.circle.fill")
+                    }
                 }
                 
-                Section("Other") {
-                    NavigationLink("Notifications", destination: NotificationView())
-                    NavigationLink("Privacy Policy", destination: PrivacyView())
-                    NavigationLink("Help & Support", destination: HelpView())
-                    NavigationLink("About Us", destination: AboutView())
-                    NavigationLink("Follow Us", destination: FollowUsView())
-                    NavigationLink("Write a Review", destination: reviewpage())
+                Section("Preferences") {
+                    NavigationLink(destination: NotificationView()) {
+                        Label("Notifications", systemImage: "bell.fill")
+                    }
+                    NavigationLink(destination: PrivacyView()) {
+                        Label("Privacy & Policy", systemImage: "lock.shield.fill")
+                    }
+                }
+                
+                Section("More") {
+                    NavigationLink(destination: HelpView()) {
+                        Label("Help & Support", systemImage: "questionmark.circle.fill")
+                    }
+                    NavigationLink(destination: AboutView()) {
+                        Label("About Us", systemImage: "info.circle.fill")
+                    }
+                    NavigationLink(destination: FollowUsView()) {
+                        Label("Follow Us", systemImage: "heart.fill")
+                    }
+                    NavigationLink(destination: reviewpage()) {
+                        Label("Write a Review", systemImage: "star.fill")
+                    }
                 }
             }
-            .navigationTitle("Setting")
-        }.toolbar(.hidden)
+            .navigationTitle("Settings")
+            .listStyle(.insetGrouped)
+        }
+        .toolbar(.hidden)
     }
 }
 
