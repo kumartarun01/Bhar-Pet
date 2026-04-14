@@ -106,6 +106,10 @@ struct ReservationView: View {
                     Text("Reservation")
                         .font(.largeTitle)
                         .bold()
+                    Spacer()
+                   NavigationLink(destination: BookingView()) {
+                       Text("My Reservtions")
+                    }
                     
                    
                 }
@@ -213,7 +217,7 @@ struct SuccessView: View {
                 .font(.largeTitle)
             
             NavigationLink("View Bookings") {
-              OrderHistoryView2()
+              BookingView()
             }
         }
     }
@@ -243,6 +247,34 @@ struct RestaurantCard: View {
         .shadow(radius: 3)
     }
 }
+struct BookingView: View {
+    @ObservedObject var manager = ReservationManager.shared
+    var body: some View {
+        List {
+            ForEach(manager.reservations) { r in
+                
+                VStack(alignment: .leading) {
+                    
+                    Text(r.restaurantName).bold()
+                    Text("👤 \(r.customerName)")
+                    Text("📞 \(r.phoneNumber)")
+                    Text("🪑 Table: \(r.tableNumber)")
+                    Text("👥 Members: \(r.members)")
+                    
+                    Text("From: \(r.startDate.formatted())")
+                    Text("To: \(r.endDate.formatted())")
+                    
+                    Text("💳 \(r.paymentMethod)")
+                        .foregroundColor(.green)
+                }
+            }
+        }
+        .onAppear {
+            manager.removeExpiredReservations()
+        }
+    }
+    }
+    
 
 // MARK: - PREVIEW
 #Preview {

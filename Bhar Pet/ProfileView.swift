@@ -54,7 +54,7 @@ struct ProfileView: View {
                 // Optional Email Show
                 Text(email)
                     .foregroundColor(.gray)
-                
+                Spacer()
                 NavigationLink(destination: EditProfileView()) {
                     Text("Edit Profile")
                         .frame(maxWidth: .infinity)
@@ -62,15 +62,6 @@ struct ProfileView: View {
                         .background(Color.green.opacity(0.2))
                         .cornerRadius(20)
                 }
-                
-                NavigationLink(destination: HistoryView()) {
-                    Text("History")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue.opacity(0.2))
-                        .cornerRadius(20)
-                }
-                
                 NavigationLink(destination: YourOrderView()) {
                     Text("Orders")
                         .frame(maxWidth: .infinity)

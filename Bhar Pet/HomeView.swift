@@ -71,7 +71,8 @@ class CartManager2: ObservableObject {
 struct HomeView: View {
     
     @State private var searchText = ""
-    
+    @State private var selection: Int = 0
+  
     let items: [FoodItem2] = [
         FoodItem2(name: "Cake", image: "cake", price: 250),
         FoodItem2(name: "Burger", image: "Burger", price: 120),
@@ -91,7 +92,7 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                // SEARCH
+               
                 HStack {
                     Image(systemName: "magnifyingglass")
                     TextField("Search food...", text: $searchText)
@@ -100,19 +101,47 @@ struct HomeView: View {
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(20)
                 .padding()
-                
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 15) {
-                        ForEach(filteredItems) { item in
-                            NavigationLink {
-                                HomeOrderView(food: item)
-                            } label: {
-                                FoodCard(item: item)
+                HStack(spacing: 20) {
+                    
+                    Button {
+                        selection = 0
+                    } label: {
+                        Image(systemName: "house.fill")
+                            .foregroundColor(selection == 0 ? .white : .blue)
+                            .padding()
+                            .background(selection == 0 ? Color.blue : Color.gray.opacity(0.2))
+                            .cornerRadius(10)
+                    }
+                    
+                    Button {
+                        selection = 1
+                    } label: {
+                        Image(systemName: "crown.fill")
+                            .foregroundColor(selection == 1 ? .white : .yellow) // 👈 yellow crown
+                            .padding()
+                            .background(selection == 1 ? Color.yellow : Color.gray.opacity(0.2))
+                            .cornerRadius(10)
+                    }
+                }
+               
+                if selection == 0 {
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 15) {
+                            ForEach(filteredItems) { item in
+                                NavigationLink {
+                                    HomeOrderView(food: item)
+                                } label: {
+                                    FoodCard(item: item)
+                                }
                             }
                         }
+                        .padding()
                     }
-                    .padding()
                 }
+                else{
+                   RecipesView()
+                }
+              
             }
         }
     }
@@ -256,6 +285,12 @@ struct OrderSuccessView: View {
     }
 }
 
+struct pickerview: View {
+    @State private var selection: Int = 0
+    var body: some View {
+   
+    }
+}
 #Preview {
     HomeView()
 }

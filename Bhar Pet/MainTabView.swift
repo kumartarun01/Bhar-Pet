@@ -22,9 +22,9 @@ NavigationStack {
                             Text("Home")
                         }
                     
-                    OrderHistoryView2()
+                    ReelsView()
                         .tabItem {
-                            Image(systemName: "calendar")
+                            Image(systemName: "play.rectangle")
                             Text("Booking")
                         }
                     
